@@ -10,57 +10,35 @@
 ## Extract information from dist.info
 file ( READ ${CMAKE_CURRENT_SOURCE_DIR}/dist.info DIST_INFO )
 if ( ${DIST_INFO} STREQUAL "" )
-  message ( "Failed to load dist.info" FATAL )
+  message ( FATAL_ERROR "Failed to load dist.info" )
 endif ()
-
-string ( REGEX REPLACE ".*name[ \t]?=[ \t]?[\"']([^\"']+)[\"'].*" "\\1" DIST_NAME ${DIST_INFO} )
-if ( ${DIST_NAME} STREQUAL ${DIST_INFO} )
-  message ( "Failed to extract package name from dist.info" FATAL )
-endif ()
+# Reads field `name` from dist.info string `DIST_INFO` into variable `var`.
+macro ( _parse_dist_field name var )
+  string ( REGEX REPLACE ".*${name}[ \t]?=[ \t]?[\"']([^\"']+)[\"'].*" "\\1" ${var} "${DIST_INFO}" )
+  if ( ${var} STREQUAL DIST_INFO )
+    message ( FATAL_ERROR "Failed to extract \"${var}\" from dist.info" )
+  endif ()
+endmacro ()
+#
+_parse_dist_field ( name DIST_NAME )
+_parse_dist_field ( version DIST_VERSION )
+_parse_dist_field ( license DIST_LICENSE )
+_parse_dist_field ( author DIST_AUTHOR )
+_parse_dist_field ( maintainer DIST_MAINTAINER )
+_parse_dist_field ( url DIST_URL )
+_parse_dist_field ( desc DIST_DESC )
 message ( "DIST_NAME: ${DIST_NAME}")
-
-string ( REGEX REPLACE ".*version[ \t]?=[ \t]?[\"']([^\"']+)[\"'].*" "\\1" DIST_VERSION ${DIST_INFO} )
-if ( ${DIST_VERSION} STREQUAL ${DIST_INFO} )
-  message ( "Failed to extract package version from dist.info" FATAL )
-endif ()
 message ( "DIST_VERSION: ${DIST_VERSION}")
-
-string ( REGEX REPLACE ".*license[ \t]?=[ \t]?[\"']([^\"']+)[\"'].*" "\\1" DIST_LICENSE ${DIST_INFO} )
-if ( ${DIST_LICENSE} STREQUAL ${DIST_INFO} )
-  set ( DIST_LICENSE "" )
-endif ()
 message ( "DIST_AUTHOR: ${DIST_LICENSE}")
-
-string ( REGEX REPLACE ".*author[ \t]?=[ \t]?[\"']([^\"']+)[\"'].*" "\\1" DIST_AUTHOR ${DIST_INFO} )
-if ( ${DIST_AUTHOR} STREQUAL ${DIST_INFO} )
-  set ( DIST_AUTHOR "" )
-endif ()
 message ( "DIST_AUTHOR: ${DIST_AUTHOR}")
-
-string ( REGEX REPLACE ".*maintainer[ \t]?=[ \t]?[\"']([^\"']+)[\"'].*" "\\1" DIST_MAINTAINER ${DIST_INFO} )
-if ( ${DIST_MAINTAINER} STREQUAL ${DIST_INFO} )
-  set ( DIST_MAINTAINER "" )
-endif ()
 message ( "DIST_MAINTAINER: ${DIST_MAINTAINER}")
-
-string ( REGEX REPLACE ".*url[ \t]?=[ \t]?[\"']([^\"']+)[\"'].*" "\\1" DIST_URL ${DIST_INFO} )
-if ( ${DIST_URL} STREQUAL ${DIST_INFO} )
-  set ( DIST_URL "" )
-endif ()
 message ( "DIST_URL: ${DIST_URL}")
-
-string ( REGEX REPLACE ".*desc[ \t]?=[ \t]?[\"']([^\"']+)[\"'].*" "\\1" DIST_DESC ${DIST_INFO} )
-if ( ${DIST_DESC} STREQUAL ${DIST_INFO} )
-  set ( DIST_DESC "" )
-endif ()
 message ( "DIST_DESC: ${DIST_DESC}")
-
 string ( REGEX REPLACE ".*depends[ \t]?=[ \t]?[\"']([^\"']+)[\"'].*" "\\1" DIST_DEPENDS ${DIST_INFO} )
-if ( ${DIST_DEPENDS} STREQUAL ${DIST_INFO} )
+if ( DIST_DEPENDS STREQUAL DIST_INFO )
   set ( DIST_DEPENDS "" )
 endif ()
 message ( "DIST_DEPENDS: ${DIST_DEPENDS}")
-
 ## 2DO: Parse DIST_DEPENDS and try to install Dependencies with automatically using externalproject_add
 
 
