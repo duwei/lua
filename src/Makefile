@@ -66,6 +66,7 @@ $(LUAC_T): $(LUAC_O) $(LUA_A)
 	$(CC) -o $@ $(LDFLAGS) $(LUAC_O) $(LUA_A) $(LIBS)
 
 clean:
+	$(RM) libcjson.a
 	$(RM) $(ALL_T) $(ALL_O)
 
 depend:

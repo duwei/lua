@@ -1,0 +1,33 @@
+prefix=/usr/local
+libdir=/usr/local/lib
+includedir=/usr/local/include
+CC= gcc
+CFLAGS= -O2 -Wall -DLUA_COMPAT_ALL -fPIC 
+LDFLAGS= 
+LIBS= -lm  
+AR= ar rcu
+RANLIB= ranlib
+RM= rm -f
+PLAT= none
+V= 5.2
+R= 5.2.1
+TO_BIN= lua luac
+TO_INC= lua.h luaconf.h lualib.h lauxlib.h lua.hpp
+TO_LIB= liblua.a
+TO_MAN= lua.1 luac.1
+INSTALL_TOP= /usr/local
+INSTALL_BIN= /usr/local/bin
+INSTALL_INC= /usr/local/include
+INSTALL_LIB= /usr/local/lib
+INSTALL_MAN= /usr/local/man/man1
+INSTALL_LMOD= /usr/local/share/lua/5.2
+INSTALL_CMOD= /usr/local/lib/lua/5.2
+INSTALL_EXEC= install -p -m 0755
+INSTALL_DATA= install -p -m 0644
+
+Name: Lua
+Description: An Extensible Extension Language
+Version: ${R}
+Requires:
+Libs: -L${libdir} -llua -lm -lcjson
+Cflags: -I${includedir}
