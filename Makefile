@@ -4,7 +4,7 @@
 # == CHANGE THE SETTINGS BELOW TO SUIT YOUR ENVIRONMENT =======================
 
 # Your platform. See PLATS for possible values.
-PLAT= none
+PLAT= linux
 
 # Where to install. The installation starts in the src and doc directories,
 # so take care if INSTALL_TOP is not an absolute path. See the local target.
@@ -41,7 +41,7 @@ PLATS= aix ansi bsd freebsd generic linux macosx mingw posix solaris
 # What to install.
 TO_BIN= lua luac
 TO_INC= lua.h luaconf.h lualib.h lauxlib.h lua.hpp
-TO_LIB= liblua.a libcjson.a
+TO_LIB= liblua.a libcjson.a libsqlite3.a
 TO_MAN= lua.1 luac.1
 
 # Lua version and release.
@@ -52,8 +52,8 @@ R= $V.1
 all:	$(PLAT)
 
 $(PLATS) clean:
-	cd cjson && $(MAKE)
-	cd ..
+	cd sqlite3 && $(MAKE) $@ && cd ..
+	cd cjson && $(MAKE) $@ && cd ..
 	cd src && $(MAKE) $@
 
 test:	dummy

@@ -118,3 +118,5 @@ install-extra:
 
 clean:
 	rm -f *.o $(TARGET)
+
+linux: all
